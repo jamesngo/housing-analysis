@@ -18,16 +18,12 @@ Description: A linear regression with target=LotArea
 ### Submission 2 ###
 
 Score: 0.76364
+
 Description: A linear regression with:
 
-    * LotFrontage
-    
-    * LotArea
-    
-    * OverallQual
-    
-    * OverallCond
-    
-    * YearRemodAdd
-    
-    * BsmtFinSF1
+* LotFrontage
+* LotArea
+* OverallQual
+* OverallCond
+* YearRemodAdd
+* BsmtFinSF1

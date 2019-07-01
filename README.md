@@ -13,7 +13,7 @@ Creating a predictive model of houses within Ames, Idaho.
 
 Score: 0.41600
 
-Description: A linear regression with target=LotArea
+Description: A linear regression with predictor=LotArea
 
 ### Submission 2 ###
 

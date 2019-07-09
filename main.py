@@ -70,7 +70,7 @@ columns = ['GarageType', 'GarageYrBlt', 'GarageFinish', 'GarageCars', 'GarageAre
 for i, row in df.loc[:,columns].iterrows():
     nan = []
     for col in columns:
-        if str(row[col]).strip() == "nan":
+        if str(row[col]).strip().lower() == "nan":
             nan.append(col)
         if col == 'GarageCars' and row['GarageCars'] == 0:
             nan.append(col)
@@ -88,10 +88,24 @@ for i, row in df.loc[:,columns].iterrows():
         if df['YearBuilt'][i] > df['GarageYrBlt'][i]:
             df.loc[i, 'GarageYrBlt'] = df['YearBuilt'][i]
 
-
-
-
-print(df.isna().sum())
+#If one of the Basement features is not present, fill all missing features
+columns = ['BsmtQual', 'BsmtCond', 'BsmtExposure', 'BsmtFinType1', 'BsmtFinSF1', 'BsmtFinType2', 'BsmtFinSF2', 'BsmtUnfSF', 'TotalBsmtSF', 'BsmtFullBath', 'BsmtHalfBath']
+for i, row in df.loc[:,columns].iterrows():
+    nan = []
+    for col in columns:
+        if str(row[col]).strip() == "nan":
+            nan.append(col)
+        if col == 'TotalBsmtSF' and row['TotalBsmtSF'] == 0:
+            nan.append(col)
+    
+    if len(nan) == 0 or len(nan) == len(columns):
+        pass
+    else:
+        for col in nan:
+            if col == 'BsmtFinSF1' or col == 'BsmtFinSF2' or col == 'BsmtUnfSF' or col == 'TotalBsmtSF':
+                df.loc[i,col] = df[col].mean()
+            else:
+                df.loc[i,col] = df[col].mode()[0]
 
 #imputing electrical column with mode
 print(df['Electrical'].isna().sum())
@@ -111,6 +125,8 @@ print(df['LotFrontage'].isna().sum())
 print(df['LotFrontage'].mean())
 df['LotFrontage'].fillna(df['LotFrontage'].mean(), inplace=True)
 print(df['LotFrontage'].isna().sum())
+
+print(df.isna().sum())
 
 #enumerating Alley with numbers
 print(df['Alley'].astype("category").cat.codes.unique())
@@ -291,6 +307,12 @@ print(df['HeatingQC'].astype("category").unique())
 df['HeatingQC'] = df['HeatingQC'].astype("category").cat.codes
 print(df['HeatingQC'].isna().sum())
 
+#enumerating CentralAir
+print(df['CentralAir'].astype("category").cat.codes.unique())
+print(df['CentralAir'].astype("category").unique())
+df['CentralAir'] = df['CentralAir'].astype("category").cat.codes
+print(df['CentralAir'].isna().sum())
+
 #enumerating Electrical
 print(df['Electrical'].astype("category").cat.codes.unique())
 print(df['Electrical'].astype("category").unique())
@@ -309,6 +331,12 @@ print(df['Functional'].astype("category").unique())
 df['Functional'] = df['Functional'].astype("category").cat.codes
 print(df['Functional'].isna().sum())
  
+#enumerating FireplaceQu
+print(df['FireplaceQu'].astype("category").cat.codes.unique())
+print(df['FireplaceQu'].astype("category").unique())
+df['FireplaceQu'] = df['FireplaceQu'].astype("category").cat.codes
+print(df['FireplaceQu'].isna().sum())
+
 #enumerating GarageType
 print(df['GarageType'].astype("category").cat.codes.unique())
 print(df['GarageType'].astype("category").unique())
@@ -320,6 +348,45 @@ print(df['GarageFinish'].astype("category").cat.codes.unique())
 print(df['GarageFinish'].astype("category").unique())
 df['GarageFinish'] = df['GarageFinish'].astype("category").cat.codes
 print(df['GarageFinish'].isna().sum())
+
+#enumerating GarageQual
+print(df['GarageQual'].astype("category").cat.codes.unique())
+print(df['GarageQual'].astype("category").unique())
+df['GarageQual'] = df['GarageQual'].astype("category").cat.codes
+print(df['GarageQual'].isna().sum())
+
+#enumerating GarageCond
+print(df['GarageCond'].astype("category").cat.codes.unique())
+print(df['GarageCond'].astype("category").unique())
+df['GarageCond'] = df['GarageCond'].astype("category").cat.codes
+print(df['GarageCond'].isna().sum())
+
+#filling GarageYrBlt
+df['GarageYrBlt'] = df['GarageYrBlt'].fillna(value=0)
+
+#enumerating PavedDrive
+print(df['PavedDrive'].astype("category").cat.codes.unique())
+print(df['PavedDrive'].astype("category").unique())
+df['PavedDrive'] = df['PavedDrive'].astype("category").cat.codes
+print(df['PavedDrive'].isna().sum())
+
+#enumerating PoolQC
+print(df['PoolQC'].astype("category").cat.codes.unique())
+print(df['PoolQC'].astype("category").unique())
+df['PoolQC'] = df['PoolQC'].astype("category").cat.codes
+print(df['PoolQC'].isna().sum())
+
+#enumerating Fence
+print(df['Fence'].astype("category").cat.codes.unique())
+print(df['Fence'].astype("category").unique())
+df['Fence'] = df['Fence'].astype("category").cat.codes
+print(df['Fence'].isna().sum())
+
+#enumerating MiscFeature
+print(df['MiscFeature'].astype("category").cat.codes.unique())
+print(df['MiscFeature'].astype("category").unique())
+df['MiscFeature'] = df['MiscFeature'].astype("category").cat.codes
+print(df['MiscFeature'].isna().sum())
 
 #enumerating SaleType
 print(df['SaleType'].astype("category").cat.codes.unique())
@@ -333,4 +400,5 @@ print(df['SaleCondition'].astype("category").unique())
 df['SaleCondition'] = df['SaleCondition'].astype("category").cat.codes
 print(df['SaleCondition'].isna().sum())
 
+print(df.isna().sum())
 df.to_csv("combine.csv")

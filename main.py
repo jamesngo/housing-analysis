@@ -400,5 +400,12 @@ print(df['SaleCondition'].astype("category").unique())
 df['SaleCondition'] = df['SaleCondition'].astype("category").cat.codes
 print(df['SaleCondition'].isna().sum())
 
+#data engineering, date
+date = []
+for i, row in df.loc[:,:].iterrows():
+    date.append(str(int(row['YrSold'])) + '-' + str(int(row['MoSold'])))
+df['Date'] = pd.to_datetime(date, format='%Y-%m')
+df.drop(['YrSold', 'MoSold'], axis=1, inplace=True)
+
 print(df.isna().sum())
 df.to_csv("combine.csv")
